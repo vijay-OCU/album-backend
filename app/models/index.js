@@ -16,6 +16,15 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
 db.lessons = require("./lesson.model.js")(sequelize, Sequelize);
+db.artists = require("./artist.model.js")(sequelize, Sequelize);
+db.albums = require("./album.model.js")(sequelize, Sequelize);
+
+db.artists.hasMany(db.albums, {
+  as: 'album'
+});
+db.albums.belongsTo(db.artists, {
+  foreignKey: 'artistId', as: 'artist',
+});
 
 db.tutorials.hasMany(db.lessons, {
   as: 'lesson'
