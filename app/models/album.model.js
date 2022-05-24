@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING
     },
     genre: {
-      type: Sequelize.BOOLEAN
+      type: Sequelize.STRING
     }
   });
   return album;

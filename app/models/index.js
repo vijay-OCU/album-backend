@@ -22,14 +22,14 @@ db.albums.hasMany(db.tracks, {
   as: 'track'
 });
 db.tracks.belongsTo(db.albums, {
-  foreignKey: 'id', as: 'album',
+  foreignKey: 'albumId', as: 'album',
 });
 
 db.artists.hasMany(db.albums, {
   as: 'album'
 });
 db.albums.belongsTo(db.artists, {
-  foreignKey: 'id', as: 'artist',
+  foreignKey: 'artistId', as: 'artist',
 });
 
 module.exports = db;

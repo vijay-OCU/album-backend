@@ -1,24 +1,25 @@
 const db = require("../models");
-const Album = db.albums;
+const Artist = db.artists;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
   
   // Validate request
-  if (!req.body.title) {
+  if (!req.body.name) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
     return;
   }
 
-  // Create a album
-  const album = {
-    title: req.body.title,
-    language: req.body.language,
-    genre: req.body.genre,
-    artistId: req.body.artistId
+  // Create a artist
+  const artist = {
+    name: req.body.name,
+    gender: req.body.gender,
+    location: req.body.location,
+    count: req.body.count,
+    //artistId: req.body.artistId
     /*
     write code to search for atist ID
     */
@@ -26,106 +27,106 @@ exports.create = (req, res) => {
     //published: req.body.published ? req.body.published : false
   };
 
-  // Save album in the database
-  Album.create(album)
+  // Save artist in the database
+  Artist.create(artist)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the album."
+          err.message || "Some error occurred while creating the artist."
       });
     });
 };
 
-// Retrieve all albums from the database.
+// Retrieve all artists from the database.
 exports.findAll = (req, res) => {
   const title = req.query.title;
   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-  Album.findAll({ where: condition })
+  Artist.findAll({ where: condition })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving albums."
+          err.message || "Some error occurred while retrieving artists."
       });
     });
 };
 
-// Find a single Album with an id
+// Find a single Artist with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Album.findByPk(id)
+  Artist.findByPk(id)
     .then(data => {
       if (data) {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find album with id=${id}.`
+          message: `Cannot find artist with id=${id}.`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error retrieving album with id=" + id
+        message: "Error retrieving artist with id=" + id
       });
     });
 };
 
-// Update a album by the id in the request
+// Update a artist by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-  Album.update(req.body, {
+  Artist.update(req.body, {
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Album was updated successfully."
+          message: "Artist was updated successfully."
         });
       } else {
         res.send({
-          message: `Cannot update Album with id=${id}. Maybe Album was not found or req.body is empty!`
+          message: `Cannot update Artist with id=${id}. Maybe Artist was not found or req.body is empty!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating album with id=" + id
+        message: "Error updating artist with id=" + id
       });
     });
 };
 
-// Delete a album with the specified id in the request
+// Delete a artist with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
-  Album.destroy({
+  Artist.destroy({
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Album was deleted successfully!"
+          message: "Artist was deleted successfully!"
         });
       } else {
         res.send({
-          message: `Cannot delete Album with id=${id}. Maybe Album was not found!`
+          message: `Cannot delete Artist with id=${id}. Maybe Artist was not found!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Album with id=" + id
+        message: "Could not delete Artist with id=" + id
       });
     });
 };
 
 // Delete all Albums from the database.
 exports.deleteAll = (req, res) => {
-  Album.destroy({
+  Artist.destroy({
     where: {},
     truncate: false
   })
@@ -135,21 +136,21 @@ exports.deleteAll = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all albums."
+          err.message || "Some error occurred while removing all artists."
       });
     });
 };
 
-// Find all published albums
+// Find all published artists
 /*exports.findAllPublished = (req, res) => {
-  Album.findAll({ where: { published: true } })
+  Artist.findAll({ where: { published: true } })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving albums."
+          err.message || "Some error occurred while retrieving artists."
       });
     });
 };*/
