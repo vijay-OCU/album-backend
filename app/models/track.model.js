@@ -1,14 +1,13 @@
 module.exports = (sequelize, Sequelize) => {
-  const Lesson = sequelize.define("lesson", {
+  const track = sequelize.define("tracks", {
+    
     title: {
       type: Sequelize.STRING
     },
-    description: {
+    length: {
       type: Sequelize.STRING
-    },
-    published: {
-      type: Sequelize.BOOLEAN
     }
+    
   });
-  return Lesson;
+  return track;
 };
