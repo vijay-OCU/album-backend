@@ -1,139 +1,156 @@
 const db = require("../models");
-const Tutorial = db.tutorials;
+const Artist = db.artists;
 const Op = db.Sequelize.Op;
+
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
+  
   // Validate request
-  if (!req.body.title) {
+  if (!req.body.name) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
     return;
   }
-  // Create a Tutorial
-  const tutorial = {
-    title: req.body.title,
-    description: req.body.description,
-    published: req.body.published ? req.body.published : false
+
+  // Create a artist
+  const artist = {
+    name: req.body.name,
+    gender: req.body.gender,
+    location: req.body.location,
+    count: req.body.count,
+    //artistId: req.body.artistId
+    /*
+    write code to search for atist ID
+    */
+
+    //published: req.body.published ? req.body.published : false
   };
-  // Save Tutorial in the database
-  Tutorial.create(tutorial)
+
+  // Save artist in the database
+  Artist.create(artist)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Tutorial."
+          err.message || "Some error occurred while creating the artist."
       });
     });
 };
-// Retrieve all Tutorials from the database.
+
+// Retrieve all artists from the database.
 exports.findAll = (req, res) => {
   const title = req.query.title;
   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-  Tutorial.findAll({ where: condition })
+  Artist.findAll({ where: condition })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving tutorials."
+          err.message || "Some error occurred while retrieving artists."
       });
     });
 };
-// Find a single Tutorial with an id
+
+// Find a single Artist with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Tutorial.findByPk(id)
+  Artist.findByPk(id)
     .then(data => {
       if (data) {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Tutorial with id=${id}.`
+          message: `Cannot find artist with id=${id}.`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error retrieving Tutorial with id=" + id
+        message: "Error retrieving artist with id=" + id
       });
     });
 };
-// Update a Tutorial by the id in the request
+
+// Update a artist by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-  Tutorial.update(req.body, {
+  Artist.update(req.body, {
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Tutorial was updated successfully."
+          message: "Artist was updated successfully."
         });
       } else {
         res.send({
-          message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found or req.body is empty!`
+          message: `Cannot update Artist with id=${id}. Maybe Artist was not found or req.body is empty!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Tutorial with id=" + id
+        message: "Error updating artist with id=" + id
       });
     });
 };
-// Delete a Tutorial with the specified id in the request
+
+// Delete a artist with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
-  Tutorial.destroy({
+  Artist.destroy({
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Tutorial was deleted successfully!"
+          message: "Artist was deleted successfully!"
         });
       } else {
         res.send({
-          message: `Cannot delete Tutorial with id=${id}. Maybe Tutorial was not found!`
+          message: `Cannot delete Artist with id=${id}. Maybe Artist was not found!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Tutorial with id=" + id
+        message: "Could not delete Artist with id=" + id
       });
     });
 };
-// Delete all Tutorials from the database.
+
+// Delete all Albums from the database.
 exports.deleteAll = (req, res) => {
-  Tutorial.destroy({
+  Artist.destroy({
     where: {},
     truncate: false
   })
     .then(nums => {
-      res.send({ message: `${nums} Tutorials were deleted successfully!` });
+      res.send({ message: `${nums} Albums were deleted successfully!` });
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all tutorials."
+          err.message || "Some error occurred while removing all artists."
       });
     });
 };
-// Find all published Tutorials
-exports.findAllPublished = (req, res) => {
-  Tutorial.findAll({ where: { published: true } })
+
+// Find all published artists
+/*exports.findAllPublished = (req, res) => {
+  Artist.findAll({ where: { published: true } })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving tutorials."
+          err.message || "Some error occurred while retrieving artists."
       });
     });
-};
+};*/
