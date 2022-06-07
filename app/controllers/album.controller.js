@@ -1,14 +1,15 @@
-const db = require("../models");
+const db = require('../models');
 const Album = db.albums;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
-  
+  console.clear();
+  console.log(req);
   // Validate request
   if (!req.body.title) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: 'Content can not be empty!',
     });
     return;
   }
@@ -18,7 +19,7 @@ exports.create = (req, res) => {
     title: req.body.title,
     language: req.body.language,
     genre: req.body.genre,
-    artistId: req.body.artistId
+    artistId: req.body.artist,
     /*
     write code to search for atist ID
     */
@@ -28,13 +29,12 @@ exports.create = (req, res) => {
 
   // Save album in the database
   Album.create(album)
-    .then(data => {
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the album."
+        message: err.message || 'Some error occurred while creating the album.',
       });
     });
 };
@@ -44,13 +44,26 @@ exports.findAll = (req, res) => {
   const title = req.query.title;
   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
   Album.findAll({ where: condition })
-    .then(data => {
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving albums."
+        message: err.message || 'Some error occurred while retrieving albums.',
+      });
+    });
+};
+
+// Retrieve all albums based on artist
+exports.findByArtist = (req, res) => {
+  const artistId = req.params.artistId;
+  Album.findAll({ where: { artistId: { [Op.like]: artistId } } })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || 'Some error occurred while retrieving albums.',
       });
     });
 };
@@ -59,18 +72,18 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
   Album.findByPk(id)
-    .then(data => {
+    .then((data) => {
       if (data) {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find album with id=${id}.`
+          message: `Cannot find album with id=${id}.`,
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving album with id=" + id
+        message: 'Error retrieving album with id=' + id,
       });
     });
 };
@@ -79,22 +92,22 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
   Album.update(req.body, {
-    where: { id: id }
+    where: { id: id },
   })
-    .then(num => {
+    .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Album was updated successfully."
+          message: 'Album was updated successfully.',
         });
       } else {
         res.send({
-          message: `Cannot update Album with id=${id}. Maybe Album was not found or req.body is empty!`
+          message: `Cannot update Album with id=${id}. Maybe Album was not found or req.body is empty!`,
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Error updating album with id=" + id
+        message: 'Error updating album with id=' + id,
       });
     });
 };
@@ -103,22 +116,22 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
   Album.destroy({
-    where: { id: id }
+    where: { id: id },
   })
-    .then(num => {
+    .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Album was deleted successfully!"
+          message: 'Album was deleted successfully!',
         });
       } else {
         res.send({
-          message: `Cannot delete Album with id=${id}. Maybe Album was not found!`
+          message: `Cannot delete Album with id=${id}. Maybe Album was not found!`,
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Could not delete Album with id=" + id
+        message: 'Could not delete Album with id=' + id,
       });
     });
 };
@@ -127,15 +140,15 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
   Album.destroy({
     where: {},
-    truncate: false
+    truncate: false,
   })
-    .then(nums => {
+    .then((nums) => {
       res.send({ message: `${nums} Albums were deleted successfully!` });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all albums."
+          err.message || 'Some error occurred while removing all albums.',
       });
     });
 };
