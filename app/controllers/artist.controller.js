@@ -18,13 +18,7 @@ exports.create = (req, res) => {
     name: req.body.name,
     gender: req.body.gender,
     location: req.body.location,
-    count: req.body.count,
-    //artistId: req.body.artistId
-    /*
-    write code to search for atist ID
-    */
-
-    //published: req.body.published ? req.body.published : false
+    count: req.body.count
   };
 
   // Save artist in the database
@@ -42,8 +36,8 @@ exports.create = (req, res) => {
 
 // Retrieve all artists from the database.
 exports.findAll = (req, res) => {
-  const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+  const name = req.query.name;
+  var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
   Artist.findAll({ where: condition })
     .then(data => {
       res.send(data);
@@ -140,17 +134,3 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-
-// Find all published artists
-/*exports.findAllPublished = (req, res) => {
-  Artist.findAll({ where: { published: true } })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving artists."
-      });
-    });
-};*/

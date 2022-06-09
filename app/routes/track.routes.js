@@ -8,9 +8,6 @@ module.exports = app => {
   // Retrieve all tracks for a album
   router.get("/:albumId/tracks/", tracks.findAll);
 
-  // Retrieve all published tracks for a album
-  //router.get("/:albumId/tracks/published", tracks.findAllPublished);
-
   // Retrieve a single track with id
   router.get("/:albumId/tracks/:id", tracks.findOne);
 

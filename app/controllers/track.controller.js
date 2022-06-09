@@ -17,8 +17,7 @@ exports.create = (req, res) => {
   const track = {
     albumId: req.params.albumId,
     title: req.body.title,
-    length: req.body.length,
-    //published: req.body.published ? req.body.published : false
+    length: req.body.length
   };
 
   // Save Track in the database
@@ -139,19 +138,3 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-
-/*// Find all published Tracks
-exports.findAllPublished = (req, res) => {
-  const trackId = req.query.trackId;
-
-  Track.findAll({ where: { published: true } })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tracks."
-      });
-    });
-};*/

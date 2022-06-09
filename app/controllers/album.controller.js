@@ -19,11 +19,6 @@ exports.create = (req, res) => {
     language: req.body.language,
     genre: req.body.genre,
     artistId: req.body.artistId
-    /*
-    write code to search for atist ID
-    */
-
-    //published: req.body.published ? req.body.published : false
   };
 
   // Save album in the database
@@ -139,17 +134,3 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-
-// Find all published albums
-/*exports.findAllPublished = (req, res) => {
-  Album.findAll({ where: { published: true } })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving albums."
-      });
-    });
-};*/
