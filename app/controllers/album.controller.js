@@ -70,7 +70,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update a album by the id in the request
+// Update a album by id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
   Album.update(req.body, {
@@ -107,13 +107,13 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot delete Album with id=${id}. Maybe Album was not found!`
+          message: `Cannot delete album with id=${id}. Maybe Album was not found!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Album with id=" + id
+        message: "Could not delete album with id=" + id
       });
     });
 };
@@ -125,7 +125,7 @@ exports.deleteAll = (req, res) => {
     truncate: false
   })
     .then(nums => {
-      res.send({ message: `${nums} Albums were deleted successfully!` });
+      res.send({ message: `${nums} Albums were deleted successfully.` });
     })
     .catch(err => {
       res.status(500).send({

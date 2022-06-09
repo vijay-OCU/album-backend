@@ -33,7 +33,7 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all Tracks from the database.
+// Retrieve all tracks from the database.
 exports.findAll = (req, res) => {
   const trackId = req.query.trackId;
   var condition = trackId ? {
@@ -49,7 +49,7 @@ exports.findAll = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving tracks."
+          err.message || "Some error occurred while retrieving the tracks."
       });
     });
 };
@@ -77,8 +77,7 @@ exports.findOne = (req, res) => {
 // Update a Track by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-  Track.update(req.body, {
-    where: { id: id }
+  Track.update(req.body, { where: { id: id }
   })
     .then(num => {
       if (num == 1) {
@@ -129,7 +128,7 @@ exports.deleteAll = (req, res) => {
     truncate: false
   })
     .then(nums => {
-      res.send({ message: `${nums} Tracks were deleted successfully!` });
+      res.send({ message: `${nums} Tracks were deleted successfully.` });
     })
     .catch(err => {
       res.status(500).send({
