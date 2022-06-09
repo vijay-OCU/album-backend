@@ -73,9 +73,7 @@ exports.findOne = (req, res) => {
 // Update a artist by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-  Artist.update(req.body, {
-    where: { id: id }
-  })
+  Artist.update(req.body, {where: { id: id } })
     .then(num => {
       if (num == 1) {
         res.send({
