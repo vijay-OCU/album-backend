@@ -1,5 +1,7 @@
 const db = require("../models");
 const Artist = db.artists;
+const Album = db.albums;
+const albumsctrlr = require('../controllers/album.controller.js');
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
@@ -44,9 +46,21 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   const name = req.query.name;
   var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
+  
   Artist.findAll({ where: condition })
     .then(data => {
+      data.forEach(artist => {
+        const artistId = artist.artistId;
+        var albumsFound = 
+         Album.findAll({ where: { artistId: { [Op.like]: artistId } } })
+          .then((albumdata) => {
+            console.log('albumdata: ', albumdata.length);
+            return albumdata.length;
+          });
+         artist.count = albumsFound;
+      });
       res.send(data);
+      console.log('data: ',data);
     })
     .catch(err => {
       res.status(500).send({
