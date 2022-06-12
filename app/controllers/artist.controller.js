@@ -1,7 +1,8 @@
 const db = require("../models");
 const Artist = db.artists;
 const Album = db.albums;
-const albumsctrlr = require('../controllers/album.controller.js');
+const albums = require('../controllers/album.controller.js');
+const { findAll } = require("./track.controller");
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
@@ -43,24 +44,21 @@ exports.create = (req, res) => {
 };
 
 // Retrieve all artists from the database.
-exports.findAll = (req, res) => {
+module.exports.findAll = ( req, res) => {
   const name = req.query.name;
   var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-  
-  Artist.findAll({ where: condition })
+  // const [results, metadata] = await db.sequelize.query(
+  //   "SELECT * FROM artists A JOIN albums WHERE albums.artistId = A.artistId"
+  // );
+  // console.log(JSON.stringify(results, null, 2));
+
+  Artist.findAll({
+    where:  condition ,
+    include: [ { model: Album, as: 'albums' } ]
+})
     .then(data => {
-      data.forEach(artist => {
-        const artistId = artist.artistId;
-        var albumsFound = 
-         Album.findAll({ where: { artistId: { [Op.like]: artistId } } })
-          .then((albumdata) => {
-            console.log('albumdata: ', albumdata.length);
-            return albumdata.length;
-          });
-         artist.count = albumsFound;
-      });
       res.send(data);
-      console.log('data: ',data);
+      // console.log('data: ',data);
     })
     .catch(err => {
       res.status(500).send({
@@ -70,12 +68,13 @@ exports.findAll = (req, res) => {
     });
 };
 
+
 // Find a single Artist with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
   Artist.findByPk(id)
     .then(data => {
-      if (data) {
+      if (data) {ß
         res.send(data);
       } else {
         res.status(404).send({

@@ -1,5 +1,6 @@
 const db = require('../models');
 const Album = db.albums;
+const Track = db.tracks;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
@@ -43,7 +44,8 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   const title = req.query.title;
   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-  Album.findAll({ where: condition })
+  Album.findAll({ where: condition,
+    include: [ { model: Track, as: 'tracks' } ] })
     .then((data) => {
       res.send(data);
     })
@@ -57,7 +59,8 @@ exports.findAll = (req, res) => {
 // Retrieve all albums based on artist
 exports.findByArtist = (req, res) => {
   const artistId = req.params.artistId;
-  Album.findAll({ where: { artistId: { [Op.like]: artistId } } })
+  Album.findAll({ where: { artistId: { [Op.like]: artistId },
+    include: [ { model: Track, as: 'tracks' } ] } })
     .then((data) => {
       res.send(data);
     })

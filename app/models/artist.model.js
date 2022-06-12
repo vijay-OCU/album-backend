@@ -9,9 +9,6 @@ module.exports = (sequelize, Sequelize) => {
       },
       location: {
         type: Sequelize.STRING
-      },
-      count: {
-        type: Sequelize.STRING
       }
     });
     return artist;
