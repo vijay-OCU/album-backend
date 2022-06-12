@@ -47,18 +47,12 @@ exports.create = (req, res) => {
 module.exports.findAll = ( req, res) => {
   const name = req.query.name;
   var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-  // const [results, metadata] = await db.sequelize.query(
-  //   "SELECT * FROM artists A JOIN albums WHERE albums.artistId = A.artistId"
-  // );
-  // console.log(JSON.stringify(results, null, 2));
-
   Artist.findAll({
     where:  condition ,
     include: [ { model: Album, as: 'albums' } ]
 })
     .then(data => {
       res.send(data);
-      // console.log('data: ',data);
     })
     .catch(err => {
       res.status(500).send({
@@ -74,7 +68,7 @@ exports.findOne = (req, res) => {
   const id = req.params.id;
   Artist.findByPk(id)
     .then(data => {
-      if (data) {ß
+      if (data) {
         res.send(data);
       } else {
         res.status(404).send({
