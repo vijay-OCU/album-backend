@@ -59,8 +59,7 @@ exports.findAll = (req, res) => {
 // Retrieve all albums based on artist
 exports.findByArtist = (req, res) => {
   const artistId = req.params.artistId;
-  Album.findAll({ where: { artistId: { [Op.like]: artistId },
-    include: [ { model: Track, as: 'tracks' } ] } })
+  Album.findAll({ where: { artistId: { [Op.like]: artistId } } })
     .then((data) => {
       res.send(data);
     })
