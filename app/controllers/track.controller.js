@@ -17,8 +17,7 @@ exports.create = (req, res) => {
   const track = {
     albumId: req.params.albumId,
     title: req.body.title,
-    length: req.body.length,
-    //published: req.body.published ? req.body.published : false
+    length: req.body.length
   };
 
   // Save Track in the database
@@ -34,7 +33,7 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all Tracks from the database.
+// Retrieve all tracks from the database.
 exports.findAll = (req, res) => {
   const albumId = req.params.albumId;
   console.log(albumId);
@@ -46,7 +45,7 @@ exports.findAll = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving tracks."
+          err.message || "Some error occurred while retrieving the tracks."
       });
     });
 };
@@ -74,8 +73,7 @@ exports.findOne = (req, res) => {
 // Update a Track by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-  Track.update(req.body, {
-    where: { id: id }
+  Track.update(req.body, { where: { id: id }
   })
     .then(num => {
       if (num == 1) {
@@ -126,7 +124,7 @@ exports.deleteAll = (req, res) => {
     truncate: false
   })
     .then(nums => {
-      res.send({ message: `${nums} Tracks were deleted successfully!` });
+      res.send({ message: `${nums} Tracks were deleted successfully.` });
     })
     .catch(err => {
       res.status(500).send({
@@ -135,19 +133,3 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-
-/*// Find all published Tracks
-exports.findAllPublished = (req, res) => {
-  const trackId = req.query.trackId;
-
-  Track.findAll({ where: { published: true } })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tracks."
-      });
-    });
-};*/
