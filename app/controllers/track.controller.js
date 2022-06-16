@@ -35,13 +35,9 @@ exports.create = (req, res) => {
 
 // Retrieve all tracks from the database.
 exports.findAll = (req, res) => {
-  const trackId = req.query.trackId;
-  var condition = trackId ? {
-    trackId: {
-      [Op.like]: `%${trackId}%`
-    }
-  } : null;
-
+  const albumId = req.params.albumId;
+  console.log(albumId);
+  var condition = albumId ? {albumId: {[Op.like]: `%${albumId}%`}} : null;
   Track.findAll({ where: condition })
     .then(data => {
       res.send(data);
